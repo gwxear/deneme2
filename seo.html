@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            table-layout: fixed;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-all;
+            transition: background-color 0.3s ease;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        th:hover, td:hover {
+            background-color: #f2f2f2;
+        }
+
+        .check {
+            color: #4CAF50;
+        }
+
+        .cross {
+            color: #f44336;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>SEO Analysis</h1>
+</header>
+
+<main>
+    <form action="/analyze" method="post">
+        <label for="url">URL:</label>
+        <input type="text" id="url" name="url" required>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if result %}
+        <h2>SEO Analysis Result for {{ result.url }}</h2>
+        
+        <table>
+            <tr>
+                <th>Title</th>
+                <td>{{ result.title or 'Not Found' }}</td>
+                <td class="{% if result.title_check == '✅' %}check{% else %}cross{% endif %}">{{ result.title_check }}</td>
+            </tr>
+            <tr>
+                <th>Meta Description</th>
+                <td>{{ result.meta_description or 'Not Found' }}</td>
+                <td class="{% if result.meta_description_check == '✅' %}check{% else %}cross{% endif %}">{{ result.meta_description_check }}</td>
+            </tr>
+            <tr>
+                <th>Image Alt Texts</th>
+                <td>
+                    {% if result.image_alt_texts %}
+                        {{ result.image_alt_texts | join('') }}
+                    {% else %}
+                        {{ result.image_alt_texts_check }}
+                    {% endif %}
+                </td>
+                <td class="{% if result.image_alt_texts_check == '✅' %}check{% else %}cross{% endif %}">{{ result.image_alt_texts_check }}</td>
+            </tr>
+            <tr>
+                <th>H1 Headings</th>
+                <td>
+                    {% if result.h1_headings %}
+                        {{ result.h1_headings | join('') }}
+                    {% else %}
+                        {{ result.h1_headings_check }}
+                    {% endif %}
+                </td>
+                <td class="{% if result.h1_headings_check == '✅' %}check{% else %}cross{% endif %}">{{ result.h1_headings_check }}</td>
+            </tr>
+            <tr>
+                <th>Robots.txt</th>
+                <td>
+                    {% if result.robots_txt %}
+                        {{ result.robots_txt }}
+                    {% else %}
+                        Not Found
+                    {% endif %}
+                </td>
+                <td class="{% if result.robots_txt %}check{% else %}cross{% endif %}">{{ result.robots_txt_check }}</td>
+            </tr>
+        </table>
+    {% endif %}
+</main>
+</body>
+</html>
